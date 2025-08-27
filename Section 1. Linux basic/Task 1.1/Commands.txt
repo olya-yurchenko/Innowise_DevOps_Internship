@@ -1,0 +1,34 @@
+realpath vboxuser
+ls -la
+
+cd low-dir
+cd ..
+
+cd ../..
+ls -l
+ls -la
+
+cd ~
+touch dog.txt
+echo "Fight club" >> dog.txt
+
+vim dog.txt
+
+cat dog.txt
+
+mv dog.txt cat.txt
+mkdir animals
+mv cat.txt animals/
+cat ./cat.txt
+cat ../home/vboxuxer/animals/cat.txt
+cat /home/vboxuser/animals/cat.txt
+
+touch mouse.txt
+touch cow.txt
+cat "Mulan" > mouse.txt
+
+rm cow.txt
+cd ..
+rm -r animals
+
+history | grep "mkdir"
