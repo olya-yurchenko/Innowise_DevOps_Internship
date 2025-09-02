@@ -1,0 +1,14 @@
+df -f | awk '{print $1,$5,$6 }' | cat > text.txt
+
+du -h /etc | sort -nr | head -10
+
+touch file.txt
+vim file.txt
+
+awk '/^N[AD][SD]\/A$/' file.txt
+
+cat -n /etc/passwd | grep '/bin/bash' > text.
+
+cp /etc/passwd /home/vboxuxer/test2.txt
+
+sed -i 's|bin/sh|bin/bash|' test2.txt
