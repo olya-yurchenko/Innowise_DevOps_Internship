@@ -1,0 +1,51 @@
+apt install -y openssh-server sudo
+
+adduser --disabled-password --gecos "" raymond
+adduser --gecos "" john
+echo 'john:123' | chpasswd
+
+usermod -aG sudo raymond
+
+sudo -u raymond ssh-keygen -t ed25519 -f /home/raymond/.ssh/id_ed25519 -N "" -C "raymond@Ubuntu"
+
+mkdir -p /home/raymond/.ssh
+cat /home/raymond/.ssh/id_ed25519.pub > /home/raymond/.ssh/authorized_keys
+chmod 700 /home/raymond/.ssh
+chmod 600 /home/raymond/.ssh/authorized_keys
+chown -R raymond:raymond /home/raymond/.ssh
+
+passwd -l raymond
+
+cat >> /etc/ssh/sshd_config <<'EOF'
+
+Match User raymond
+    PasswordAuthentication no
+
+Match User john
+    PubkeyAuthentication no
+EOF
+
+systemctl restart ssh
+
+printf "TextTextText" > /home/raymond/document.txt
+chown raymond:raymond /home/raymond/document.txt
+chmod 644 /home/raymond/document.txt
+
+sudo -u john tee /home/john/script.sh > /dev/null <<'SH'
+#!/bin/sh
+echo "Script OK"
+SH
+chmod 750 /home/john/script.sh
+
+usermod -s /bin/bash john
+
+adduser --disabled-password --gecos "" second_user
+usermod -s /bin/sh second_user
+echo 'second_user:1234' | chpasswd
+
+usermod -aG john second_user
+
+su - second_user -c '/home/john/script.sh'
+
+touch /home/raymond/file2.txt
+scp /home/raymond/file2.txt john@Ubuntu:/home/john/
